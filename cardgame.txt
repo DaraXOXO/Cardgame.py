@@ -1,0 +1,59 @@
+import random
+import time
+
+class Card:
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+
+class Deck:
+    def __init__(self):
+        self.cards = [Card(rank, suit) for rank in ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+                      for suit in ['Hearts', 'Diamonds', 'Clubs', 'Spades']]
+        random.shuffle(self.cards)
+
+    def deal_card(self):
+        return self.cards.pop()
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.points = 0
+
+    def increase_points(self, points):
+        self.points += points
+
+def display_card(card):
+    print(f'{card.rank} of {card.suit}')
+
+def main():
+    num_players = int(input("Enter number of players: "))
+    players = [Player(input(f"Enter name for player {i+1}: ")) for i in range(num_players)]
+    deck = Deck()
+    turn = 1
+    max_points = 20  # Change this to determine how many points to play until
+    while all(player.points < max_points for player in players):
+        print(f"\nTurn {turn}")
+        for _ in range(5):  # Deal 5 cards each turn, you can change this number
+            card = deck.deal_card()
+            display_card(card)
+            time.sleep(2)  # Change this to adjust display time for each card
+        recall_type = random.choice(["Suits", "Ranks"])
+        recall = input(f"\nRecall {recall_type}: ").lower()
+        correct_answers = 0
+        for card in deck.cards[-5:]:
+            if (recall_type == "Suits" and card.suit.lower() in recall) or \
+                    (recall_type == "Ranks" and card.rank.lower() in recall):
+                correct_answers += 1
+        for player in players:
+            player.increase_points(correct_answers)
+            print(f"{player.name} scored {correct_answers} points this turn.")
+        turn += 1
+
+    # Display final scores
+    print("\nFinal Scores:")
+    for player in players:
+        print(f"{player.name}: {player.points}")
+
+if __name__ == "__main__":
+    main()
