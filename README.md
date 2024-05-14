@@ -1,5 +1,13 @@
-Welcome to my card game!
+
+
+# Cardgame
+
+# readme.file
+
+Welcome to my card game! This is python code on how to play cards with your friends.
 My main function will 
+#How to play
+
 Create one deck
 shuffle the deck
 Create both players
